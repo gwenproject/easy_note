@@ -35,7 +35,7 @@ struct DeleteNoteResponse {
 }
 
 struct UpdateNoteRequest {
-    1: note_id
+    1: i64 note_id
     2: optional string title
     3: optional string content
 }
