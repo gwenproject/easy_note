@@ -1,5 +1,5 @@
 syntax="proto3";
-package kuser;
+package user;
 option go_package = "kuser";
 
 message BaseResp {
@@ -35,6 +35,11 @@ message MGetUserResponse {
 message CheckUserRequest {
     string user_name = 1;
     string password = 2;
+}
+
+message CheckUserResponse {
+    int64 user_id = 1;
+    BaseResp base_resp = 2;
 }
 
 service UserService {
