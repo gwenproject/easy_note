@@ -9,8 +9,11 @@ const (
 	Notes                   = "notes"
 	NoteID                  = "note_id"
 	ApiServiceName          = "apiservice"
+	ApiServicePort          = 8080
 	NoteServiceName         = "noteservice"
+	NoteServicePort         = 8888
 	UserServiceName         = "userservice"
+	UserServicePort         = 8889
 	CPURateLimit    float64 = 80.0
 	DefaultLimit            = 10
 )
