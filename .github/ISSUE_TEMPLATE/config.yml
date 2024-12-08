@@ -1,14 +1,1 @@
-blank: 
-  - title: "空白问题"
-    labels: 
-      - "bug"
-      
-bug_report: 
-  - title: "报告错误"
-    labels: 
-      - "bug"
-
-feature_request: 
-  - title: "功能请求"
-    labels: 
-      - "enhancement"
+blank_issues_enabled: false
