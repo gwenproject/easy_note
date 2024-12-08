@@ -1,4 +1,4 @@
-package error
+package errno
 
 import (
 	"errors"
@@ -44,6 +44,9 @@ var (
 
 func ConvertErr(err error) ErrNo {
 	errNo := ErrNo{}
+	if err == nil {
+		return Success
+	}
 	if errors.As(err, &errNo) {
 		return errNo
 	}
