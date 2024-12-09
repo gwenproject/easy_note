@@ -3,6 +3,7 @@ CREATE TABLE `user`
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'PK',
     `user_name`  varchar(128) NOT NULL DEFAULT '' COMMENT 'UserName',
     `password`   varchar(128) NOT NULL DEFAULT '' COMMENT 'Password',
+    `avatar`     varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'User account create time',
     `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'User account update time',
     `deleted_at` timestamp NULL DEFAULT NULL COMMENT 'User account delete time',
