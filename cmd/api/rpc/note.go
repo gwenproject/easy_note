@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -12,7 +13,7 @@ import (
 
 var noteClient noteservice.Client
 
-func InitNoteRpc() {
+func InitNoteRPC() {
 	var err error
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
@@ -26,6 +27,7 @@ func InitNoteRpc() {
 		client.WithConnectTimeout(100*time.Millisecond),   // conn timeout
 		client.WithFailureRetry(retry.NewFailurePolicy()), // retry
 	)
+	fmt.Println(noteClient)
 	if err != nil {
 		panic(err)
 	}

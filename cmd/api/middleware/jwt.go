@@ -29,9 +29,9 @@ func init() {
 			return jwt.MapClaims{}
 		},
 		HTTPStatusMessageFunc: func(e error, ctx context.Context, c *app.RequestContext) string {
-			switch e.(type) {
+			switch e := e.(type) {
 			case errno.ErrNo:
-				return e.(errno.ErrNo).ErrMsg
+				return e.ErrMsg
 			default:
 				return e.Error()
 			}
