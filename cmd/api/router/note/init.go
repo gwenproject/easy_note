@@ -10,6 +10,7 @@ func InitNoteV1(g *route.RouterGroup) {
     group := g.Group("/note")
     group.Use(middleware.AuthMiddleware.MiddlewareFunc())
     group.POST("/query", v1.QueryNote)
+    group.POST("", v1.CreateNote)
 }
 
 // InitNoteV2 to be used in the future

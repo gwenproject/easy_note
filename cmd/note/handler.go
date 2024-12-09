@@ -14,7 +14,13 @@ type NoteServiceImpl struct{}
 
 // CreateNote implements the NoteServiceImpl interface.
 func (s *NoteServiceImpl) CreateNote(ctx context.Context, req *knote.CreateNoteRequest) (resp *knote.CreateNoteResponse, err error) {
-    // TODO: Your code here...
+    resp = new(knote.CreateNoteResponse)
+    err = service.NoteServiceImpl.CreateNote(ctx, req)
+    if err != nil {
+        resp.BaseResp = pack.BuildBaseResp(err)
+        return
+    }
+    resp.BaseResp = pack.BuildBaseResp(nil)
     return
 }
 

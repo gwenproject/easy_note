@@ -16,16 +16,15 @@ func QueryNote(ctx context.Context, c *app.RequestContext) {
     userId := middleware.AuthMiddleware.IdentityHandler(ctx, c).(int64)
     hlog.Info("userId: ", userId)
     var queryVar struct {
-        Current  int64  `json:"current",form:"current",query:"current"`
-        PageSize int64  `json:"pageSize",form:"pageSize",query:"pageSize"`
-        Keyword  string `json:"keyword",form:"keyword",query:"keyword"`
+        Current  int64  `json:"current"`
+        PageSize int64  `json:"pageSize"`
+        Keyword  string `json:"keyword"`
     }
 
     if err := c.Bind(&queryVar); err != nil {
         handler.SendResponse(c, errno.ConvertErr(err), nil)
         return
     }
-    hlog.Info("queryVar: ", queryVar)
 
     if queryVar.PageSize <= 0 || queryVar.PageSize >= 100 {
         handler.SendResponse(c, errno.ParamErr, nil)
@@ -48,4 +47,29 @@ func QueryNote(ctx context.Context, c *app.RequestContext) {
         constants.Total: total,
         constants.List:  notes,
     })
+}
+
+func CreateNote(ctx context.Context, c *app.RequestContext) {
+    userId := middleware.AuthMiddleware.IdentityHandler(ctx, c).(int64)
+    req := new(knote.CreateNoteRequest)
+    if err := c.Bind(req); err != nil {
+        handler.SendResponse(c, errno.ConvertErr(err), nil)
+        return
+    }
+    req.UserId = userId
+    if len(req.Title) == 0 {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("标题不能为空"), nil)
+        return
+    }
+    if len(req.Content) == 0 {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("内容不能为空"), nil)
+        return
+    }
+
+    err := rpc.CreateNote(context.Background(), req)
+    if err != nil {
+        handler.SendResponse(c, errno.ConvertErr(err), nil)
+        return
+    }
+    handler.SendResponse(c, nil, nil)
 }

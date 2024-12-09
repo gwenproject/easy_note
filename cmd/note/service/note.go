@@ -23,6 +23,15 @@ func init() {
     NoteServiceImpl = NewNoteService()
 }
 
+func (s *NoteService) CreateNote(ctx context.Context, req *knote.CreateNoteRequest) error {
+    dbNote := &mysql.Note{
+        UserId:  req.UserId,
+        Title:   req.Title,
+        Content: req.Content,
+    }
+    return mysql.CreateNote(ctx, []*mysql.Note{dbNote})
+}
+
 func (s *NoteService) QueryNote(ctx context.Context, req *knote.QueryNoteRequest) ([]*knote.Note, int64, error) {
     noteModels, total, err := mysql.QueryNote(ctx, req.UserId, req.Keyword, int(req.Current), int(req.PageSize))
     if err != nil {

@@ -44,3 +44,14 @@ func QueryNote(ctx context.Context, req *knote.QueryNoteRequest) ([]*knote.Note,
     }
     return resp.Notes, resp.Total, nil
 }
+
+func CreateNote(ctx context.Context, req *knote.CreateNoteRequest) error {
+    resp, err := noteClient.CreateNote(ctx, req)
+    if err != nil {
+        return err
+    }
+    if resp.BaseResp.StatusCode != errno.SuccessCode {
+        return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
+    }
+    return nil
+}
