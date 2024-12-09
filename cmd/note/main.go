@@ -1,53 +1,54 @@
 package main
 
 import (
-	"fmt"
-	"net"
+    "fmt"
+    "github.com/gwen0x4c3/easy_note/cmd/note/rpc"
+    "net"
 
-	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/cloudwego/kitex/pkg/limit"
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	"github.com/cloudwego/kitex/server"
-	"github.com/gwen0x4c3/easy_note/cmd/user/dal"
-	"github.com/gwen0x4c3/easy_note/kitex_gen/knote/noteservice"
-	"github.com/gwen0x4c3/easy_note/pkg/constants"
-	etcd "github.com/kitex-contrib/registry-etcd"
+    "github.com/cloudwego/kitex/pkg/klog"
+    "github.com/cloudwego/kitex/pkg/limit"
+    "github.com/cloudwego/kitex/pkg/rpcinfo"
+    "github.com/cloudwego/kitex/server"
+    "github.com/gwen0x4c3/easy_note/cmd/note/dal"
+    "github.com/gwen0x4c3/easy_note/kitex_gen/knote/noteservice"
+    "github.com/gwen0x4c3/easy_note/pkg/constants"
+    etcd "github.com/kitex-contrib/registry-etcd"
 )
 
 func Init() {
-	// TODO Jaeger
+    // TODO Jaeger
 
-	// TODO Init UserService rpc client
+    rpc.InitRPC()
 
-	dal.Init()
+    dal.Init()
 }
 
 func main() {
-	r, err := etcd.NewEtcdRegistry([]string{constants.EtcdAddress})
-	if err != nil {
-		panic(err)
-	}
-	ip, err := constants.GetOutBoundIP()
-	if err != nil {
-		panic(err)
-	}
-	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", ip, constants.NoteServicePort))
-	if err != nil {
-		panic(err)
-	}
-	Init()
-	svr := noteservice.NewServer(
-		new(NoteServiceImpl),
-		server.WithServiceAddr(addr),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: constants.NoteServiceName}),
-		server.WithRegistry(r),
-		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}),
-		server.WithMuxTransport(),
-	)
+    r, err := etcd.NewEtcdRegistry([]string{constants.EtcdAddress})
+    if err != nil {
+        panic(err)
+    }
+    ip, err := constants.GetOutBoundIP()
+    if err != nil {
+        panic(err)
+    }
+    addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", ip, constants.NoteServicePort))
+    if err != nil {
+        panic(err)
+    }
+    Init()
+    svr := noteservice.NewServer(
+        new(NoteServiceImpl),
+        server.WithServiceAddr(addr),
+        server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: constants.NoteServiceName}),
+        server.WithRegistry(r),
+        server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}),
+        //server.WithMuxTransport(),
+    )
 
-	err = svr.Run()
+    err = svr.Run()
 
-	if err != nil {
-		klog.Info(err.Error())
-	}
+    if err != nil {
+        klog.Info(err.Error())
+    }
 }
