@@ -4,12 +4,12 @@ import (
 	"github.com/gwen0x4c3/easy_note/pkg/errno"
 )
 
-func InitRpc() {
-	InitUserRpc()
-	InitNoteRpc()
+func InitRPC() {
+	InitUserRPC()
+	InitNoteRPC()
 }
 
-func CheckError(code int64, message string, err error) error {
+func checkError(code int64, message string, err error) error {
 	if err != nil {
 		return err
 	}

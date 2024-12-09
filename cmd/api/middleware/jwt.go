@@ -13,10 +13,10 @@ import (
 	"github.com/hertz-contrib/jwt"
 )
 
-var authMiddleware *jwt.HertzJWTMiddleware
+var AuthMiddleware *jwt.HertzJWTMiddleware
 
 func init() {
-	authMiddleware, _ = jwt.New(&jwt.HertzJWTMiddleware{
+	AuthMiddleware, _ = jwt.New(&jwt.HertzJWTMiddleware{
 		Key:        []byte(constants.SecretKey),
 		Timeout:    time.Hour,
 		MaxRefresh: time.Hour * 24,
@@ -29,9 +29,9 @@ func init() {
 			return jwt.MapClaims{}
 		},
 		HTTPStatusMessageFunc: func(e error, ctx context.Context, c *app.RequestContext) string {
-			switch e.(type) {
+			switch e := e.(type) {
 			case errno.ErrNo:
-				return e.(errno.ErrNo).ErrMsg
+				return e.ErrMsg
 			default:
 				return e.Error()
 			}
