@@ -13,10 +13,10 @@ import (
 	"github.com/hertz-contrib/jwt"
 )
 
-var authMiddleware *jwt.HertzJWTMiddleware
+var AuthMiddleware *jwt.HertzJWTMiddleware
 
 func init() {
-	authMiddleware, _ = jwt.New(&jwt.HertzJWTMiddleware{
+	AuthMiddleware, _ = jwt.New(&jwt.HertzJWTMiddleware{
 		Key:        []byte(constants.SecretKey),
 		Timeout:    time.Hour,
 		MaxRefresh: time.Hour * 24,

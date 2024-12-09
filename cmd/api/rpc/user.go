@@ -23,7 +23,7 @@ func InitUserRpc() {
 	userClient, err = userservice.NewClient(
 		constants.UserServiceName,
 		client.WithResolver(r),
-		client.WithMuxConnection(1),
+		// client.WithMuxConnection(1),
 		client.WithRPCTimeout(3*time.Second),
 		client.WithConnectTimeout(100*time.Millisecond),
 		client.WithFailureRetry(retry.NewFailurePolicy()),

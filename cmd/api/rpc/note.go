@@ -21,7 +21,7 @@ func InitNoteRpc() {
 	noteClient, err = noteservice.NewClient(
 		constants.NoteServiceName,
 		client.WithResolver(r),
-		client.WithMuxConnection(1),                       // mux
+		// client.WithMuxConnection(1),                       // mux
 		client.WithRPCTimeout(3*time.Second),              // rpc timeout
 		client.WithConnectTimeout(100*time.Millisecond),   // conn timeout
 		client.WithFailureRetry(retry.NewFailurePolicy()), // retry

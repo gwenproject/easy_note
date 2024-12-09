@@ -42,7 +42,7 @@ func main() {
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: constants.UserServiceName}),
 		server.WithRegistry(r), // registry
 		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}), // limit
-		server.WithMuxTransport(), // multiplex
+		// server.WithMuxTransport(), // 多路复用，not supported on windows
 	)
 
 	err = svr.Run()
