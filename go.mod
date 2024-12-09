@@ -1,6 +1,6 @@
 module github.com/gwen0x4c3/easy_note
 
-go 1.23.2
+go 1.23
 
 require (
 	github.com/cloudwego/fastpb v0.0.5
