@@ -21,4 +21,5 @@ const (
 var (
     MySQLDefaultDSN = "root:root@tcp(" + GetIp("MysqlIp") + ":3306)/easy_note?charset=utf8&parseTime=True&loc=Local"
     EtcdAddress     = GetIp("EtcdIp") + ":2379"
+    JaegerHost      = GetIp("JaegerIp")
 )
