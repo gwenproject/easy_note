@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "github.com/gwen0x4c3/easy_note/cmd/note/rpc"
+    "github.com/gwen0x4c3/easy_note/pkg/tracer"
     "net"
 
     "github.com/cloudwego/kitex/pkg/klog"
@@ -16,7 +17,7 @@ import (
 )
 
 func Init() {
-    // TODO Jaeger
+    tracer.InitJaeger(constants.NoteServiceName)
 
     rpc.InitRPC()
 
