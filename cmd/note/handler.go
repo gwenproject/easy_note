@@ -32,7 +32,8 @@ func (s *NoteServiceImpl) DeleteNote(ctx context.Context, req *knote.DeleteNoteR
 
 // UpdateNote implements the NoteServiceImpl interface.
 func (s *NoteServiceImpl) UpdateNote(ctx context.Context, req *knote.UpdateNoteRequest) (resp *knote.UpdateNoteResponse, err error) {
-    // TODO: Your code here...
+    resp = new(knote.UpdateNoteResponse)
+    err = service.NoteServiceImpl.UpdateNote(ctx, req)
     return
 }
 

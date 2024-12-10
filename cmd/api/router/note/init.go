@@ -11,6 +11,7 @@ func InitNoteV1(g *route.RouterGroup) {
     group.Use(middleware.AuthMiddleware.MiddlewareFunc())
     group.POST("/query", v1.QueryNote)
     group.POST("", v1.CreateNote)
+    group.PUTEX("/:note_id", v1.UpdateNote)
 }
 
 // InitNoteV2 to be used in the future

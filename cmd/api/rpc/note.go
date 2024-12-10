@@ -55,3 +55,14 @@ func CreateNote(ctx context.Context, req *knote.CreateNoteRequest) error {
     }
     return nil
 }
+
+func UpdateNote(ctx context.Context, req *knote.UpdateNoteRequest) error {
+    resp, err := noteClient.UpdateNote(ctx, req)
+    if err != nil {
+        return err
+    }
+    if resp.BaseResp.StatusCode != errno.SuccessCode {
+        return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
+    }
+    return nil
+}
