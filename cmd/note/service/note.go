@@ -44,6 +44,10 @@ func (s *NoteService) UpdateNote(ctx context.Context, req *knote.UpdateNoteReque
     return mysql.UpdateNote(ctx, dbNote)
 }
 
+func (s *NoteService) DeleteNote(ctx context.Context, req *knote.DeleteNoteRequest) error {
+    return mysql.DeleteNote(ctx, req.NoteId)
+}
+
 func (s *NoteService) QueryNote(ctx context.Context, req *knote.QueryNoteRequest) ([]*knote.Note, int64, error) {
     noteModels, total, err := mysql.QueryNote(ctx, req.UserId, req.Keyword, int(req.Current), int(req.PageSize))
     if err != nil {

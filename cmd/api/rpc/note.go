@@ -66,3 +66,14 @@ func UpdateNote(ctx context.Context, req *knote.UpdateNoteRequest) error {
     }
     return nil
 }
+
+func DeleteNote(ctx context.Context, req *knote.DeleteNoteRequest) error {
+    resp, err := noteClient.DeleteNote(ctx, req)
+    if err != nil {
+        return err
+    }
+    if resp.BaseResp.StatusCode != errno.SuccessCode {
+        return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
+    }
+    return nil
+}

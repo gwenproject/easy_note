@@ -26,7 +26,12 @@ func (s *NoteServiceImpl) CreateNote(ctx context.Context, req *knote.CreateNoteR
 
 // DeleteNote implements the NoteServiceImpl interface.
 func (s *NoteServiceImpl) DeleteNote(ctx context.Context, req *knote.DeleteNoteRequest) (resp *knote.DeleteNoteResponse, err error) {
-    // TODO: Your code here...
+    resp = new(knote.DeleteNoteResponse)
+    err = service.NoteServiceImpl.DeleteNote(ctx, req)
+    if err != nil {
+        resp.BaseResp = pack.BuildBaseResp(err)
+    }
+    resp.BaseResp = pack.BuildBaseResp(nil)
     return
 }
 
@@ -34,6 +39,11 @@ func (s *NoteServiceImpl) DeleteNote(ctx context.Context, req *knote.DeleteNoteR
 func (s *NoteServiceImpl) UpdateNote(ctx context.Context, req *knote.UpdateNoteRequest) (resp *knote.UpdateNoteResponse, err error) {
     resp = new(knote.UpdateNoteResponse)
     err = service.NoteServiceImpl.UpdateNote(ctx, req)
+    if err != nil {
+        resp.BaseResp = pack.BuildBaseResp(err)
+        return
+    }
+    resp.BaseResp = pack.BuildBaseResp(nil)
     return
 }
 
@@ -62,5 +72,6 @@ func (s *NoteServiceImpl) QueryNote(ctx context.Context, req *knote.QueryNoteReq
     }
     resp.Notes = notes
     resp.Total = total
+    resp.BaseResp = pack.BuildBaseResp(nil)
     return
 }

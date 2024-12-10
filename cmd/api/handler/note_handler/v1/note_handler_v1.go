@@ -102,3 +102,19 @@ func UpdateNote(ctx context.Context, c *app.RequestContext) {
     }
     handler.SendResponse(c, nil, nil)
 }
+
+func DeleteNote(ctx context.Context, c *app.RequestContext) {
+    noteId := c.Param("note_id")
+    noteIdInt, err := strconv.ParseInt(noteId, 10, 64)
+    if err != nil {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("路由参数错误"), nil)
+        return
+    }
+    req := new(knote.DeleteNoteRequest)
+    req.NoteId = noteIdInt
+    if err := rpc.DeleteNote(context.Background(), req); err != nil {
+        handler.SendResponse(c, errno.ConvertErr(err), nil)
+        return
+    }
+    handler.SendResponse(c, nil, nil)
+}

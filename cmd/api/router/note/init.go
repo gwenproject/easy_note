@@ -12,6 +12,7 @@ func InitNoteV1(g *route.RouterGroup) {
     group.POST("/query", v1.QueryNote)
     group.POST("", v1.CreateNote)
     group.PUT("/:note_id", v1.UpdateNote)
+    group.DELETE("/:note_id", v1.DeleteNote)
 }
 
 // InitNoteV2 to be used in the future
