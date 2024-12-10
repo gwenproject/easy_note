@@ -7,6 +7,7 @@ import (
     "github.com/gwen0x4c3/easy_note/kitex_gen/kuser"
     "github.com/gwen0x4c3/easy_note/kitex_gen/kuser/userservice"
     "github.com/gwen0x4c3/easy_note/pkg/constants"
+    "github.com/gwen0x4c3/easy_note/pkg/errno"
     etcd "github.com/kitex-contrib/registry-etcd"
     "time"
 )
@@ -33,8 +34,11 @@ func InitUserRPC() {
 
 func MGetUser(ctx context.Context, req *kuser.MGetUserRequest) (map[int64]*kuser.User, error) {
     resp, err := userClient.MGetUser(ctx, req)
-    if err = checkError(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage, err); err != nil {
+    if err != nil {
         return nil, err
+    }
+    if resp.BaseResp.StatusCode != errno.SuccessCode {
+        return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
     }
     res := make(map[int64]*kuser.User)
     for _, u := range resp.Users {

@@ -10,6 +10,7 @@ import (
     "github.com/gwen0x4c3/easy_note/kitex_gen/knote"
     "github.com/gwen0x4c3/easy_note/pkg/constants"
     "github.com/gwen0x4c3/easy_note/pkg/errno"
+    "strconv"
 )
 
 func QueryNote(ctx context.Context, c *app.RequestContext) {
@@ -68,6 +69,50 @@ func CreateNote(ctx context.Context, c *app.RequestContext) {
 
     err := rpc.CreateNote(context.Background(), req)
     if err != nil {
+        handler.SendResponse(c, errno.ConvertErr(err), nil)
+        return
+    }
+    handler.SendResponse(c, nil, nil)
+}
+
+func UpdateNote(ctx context.Context, c *app.RequestContext) {
+    noteId := c.Param("note_id")
+    req := new(knote.UpdateNoteRequest)
+    if err := c.Bind(req); err != nil {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("参数错误"), nil)
+        return
+    }
+    if req.Title != nil && len(*req.Title) == 0 {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("标题不能为空"), nil)
+        return
+    }
+    if req.Content != nil && len(*req.Content) == 0 {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("内容不能为空"), nil)
+        return
+    }
+    noteIdInt, err := strconv.ParseInt(noteId, 10, 64)
+    if err != nil {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("路由参数错误"), nil)
+        return
+    }
+    req.NoteId = noteIdInt
+    if err := rpc.UpdateNote(context.Background(), req); err != nil {
+        handler.SendResponse(c, errno.ConvertErr(err), nil)
+        return
+    }
+    handler.SendResponse(c, nil, nil)
+}
+
+func DeleteNote(ctx context.Context, c *app.RequestContext) {
+    noteId := c.Param("note_id")
+    noteIdInt, err := strconv.ParseInt(noteId, 10, 64)
+    if err != nil {
+        handler.SendResponse(c, errno.ParamErr.WithMessage("路由参数错误"), nil)
+        return
+    }
+    req := new(knote.DeleteNoteRequest)
+    req.NoteId = noteIdInt
+    if err := rpc.DeleteNote(context.Background(), req); err != nil {
         handler.SendResponse(c, errno.ConvertErr(err), nil)
         return
     }
